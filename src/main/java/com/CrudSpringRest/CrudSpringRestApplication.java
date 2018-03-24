@@ -7,28 +7,40 @@ import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
+import com.CrudSpringRest.enums.TipoCliente;
 import com.CrudSpringRest.model.Categoria;
 import com.CrudSpringRest.model.Cidade;
+import com.CrudSpringRest.model.Cliente;
+import com.CrudSpringRest.model.Endereco;
 import com.CrudSpringRest.model.Estado;
 import com.CrudSpringRest.model.Produto;
 import com.CrudSpringRest.repository.CategoriaRepository;
 import com.CrudSpringRest.repository.CidadeRepository;
+import com.CrudSpringRest.repository.ClienteRepository;
+import com.CrudSpringRest.repository.EnderecoRepository;
 import com.CrudSpringRest.repository.EstadoRepository;
 import com.CrudSpringRest.repository.ProdutoRepository;
 
 @SpringBootApplication
 public class CrudSpringRestApplication implements CommandLineRunner {
-	
+
 	@Autowired
 	private CategoriaRepository categoriaRepository;
-	
+
 	@Autowired
 	private ProdutoRepository produtoRepository;
-	
+
 	@Autowired
 	private EstadoRepository estadoRepository;
+	
 	@Autowired
 	private CidadeRepository cidadeRepository;
+	
+	@Autowired
+	private ClienteRepository clienteRepository;
+	
+	@Autowired
+	private EnderecoRepository enderecoRepository;
 
 	public static void main(String[] args) {
 		SpringApplication.run(CrudSpringRestApplication.class, args);
@@ -36,21 +48,24 @@ public class CrudSpringRestApplication implements CommandLineRunner {
 
 	@Override
 	public void run(String... arg0) throws Exception {
-		
+
 		Categoria cat1 = new Categoria(null, "Informática");
-		Categoria cat2 = new Categoria(null, "Eletrodomésticos");
+		Categoria cat2 = new Categoria(null, "Escritório");
 		
-		Produto p1 = new Produto(null,"Computador", 2000.00);
-		Produto p2 = new Produto(null,"Refrigerador", 3300.00);
-		Produto p3 = new Produto(null,"Notbook", 100.00);
+		Produto p1 = new Produto(null, "Computador", 2000.00);
+		Produto p2 = new Produto(null, "Impressora", 800.00);
+		Produto p3 = new Produto(null, "Mouse", 80.00);
 		
-		cat1.getProdutos().addAll(Arrays.asList(p1,p2,p3));
+		cat1.getProdutos().addAll(Arrays.asList(p1, p2, p3));
 		cat2.getProdutos().addAll(Arrays.asList(p2));
 		
 		p1.getCategorias().addAll(Arrays.asList(cat1));
-		p2.getCategorias().addAll(Arrays.asList(cat1,cat2));
+		p2.getCategorias().addAll(Arrays.asList(cat1, cat2));
 		p3.getCategorias().addAll(Arrays.asList(cat1));
-		
+				
+		categoriaRepository.save(Arrays.asList(cat1, cat2));
+		produtoRepository.save(Arrays.asList(p1, p2, p3));
+
 		Estado est1 = new Estado(null, "Minas Gerais");
 		Estado est2 = new Estado(null, "São Paulo");
 		
@@ -63,10 +78,19 @@ public class CrudSpringRestApplication implements CommandLineRunner {
 
 		estadoRepository.save(Arrays.asList(est1, est2));
 		cidadeRepository.save(Arrays.asList(c1, c2, c3));
-		categoriaRepository.save(Arrays.asList(cat1,cat2));
-		produtoRepository.save(Arrays.asList(p1,p2,p3));
 		
+		Cliente cli1 = new Cliente(null, "Maria Silva", "maria@gmail.com", "36378912377", TipoCliente.PESSOAFISICA);
+		
+		cli1.getTelefones().addAll(Arrays.asList("27363323", "93838393"));
+		
+		Endereco e1 = new Endereco(null, "Rua Flores", "300", "Apto 303", "Jardim", "38220834", cli1, c1);
+		Endereco e2 = new Endereco(null, "Avenida Matos", "105", "Sala 800", "Centro", "38777012", cli1, c2);
+		
+		cli1.getEnderecos().addAll(Arrays.asList(e1, e2));
+		
+		clienteRepository.save(Arrays.asList(cli1));
+		enderecoRepository.save(Arrays.asList(e1, e2));
+
 	}
-	
-	
+
 }
