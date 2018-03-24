@@ -1,40 +1,33 @@
 package com.CrudSpringRest.model;
 
 import java.io.Serializable;
-import java.util.ArrayList;
-import java.util.List;
 
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
-import javax.persistence.ManyToMany;
-
-import com.fasterxml.jackson.annotation.JsonIgnore;
+import javax.persistence.JoinColumn;
+import javax.persistence.ManyToOne;
 
 @Entity
-public class Categoria implements Serializable {
-
+public class Cidade implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	
 	private Long id;
-	
-	private String descricao;
-	
-	
-	private List<Produto> produtos = new ArrayList<>();
+	private String nome;
 
-	public Categoria() {
-		super();
+	private Estado estado;
+
+	public Cidade() {
 	}
 
-	public Categoria(Long id, String descricao) {
+	public Cidade(Long id, String nome, Estado estado) {
 		super();
 		this.id = id;
-		this.descricao = descricao;
+		this.nome = nome;
+		this.estado = estado;
 	}
-	
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	public Long getId() {
@@ -45,22 +38,22 @@ public class Categoria implements Serializable {
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
-	}
-	
-	@JsonIgnore
-    @ManyToMany(mappedBy ="categorias")
-	public List<Produto> getProdutos() {
-		return produtos;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
 
-	public void setProdutos(List<Produto> produtos) {
-		this.produtos = produtos;
+	@ManyToOne
+	@JoinColumn(name = "estado_id")
+	public Estado getEstado() {
+		return estado;
+	}
+
+	public void setEstado(Estado estado) {
+		this.estado = estado;
 	}
 
 	@Override
@@ -79,7 +72,7 @@ public class Categoria implements Serializable {
 			return false;
 		if (getClass() != obj.getClass())
 			return false;
-		Categoria other = (Categoria) obj;
+		Cidade other = (Cidade) obj;
 		if (id == null) {
 			if (other.id != null)
 				return false;
