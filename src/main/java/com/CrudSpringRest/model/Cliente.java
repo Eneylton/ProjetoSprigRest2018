@@ -15,6 +15,7 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.CrudSpringRest.enums.TipoCliente;
+import com.fasterxml.jackson.annotation.JsonManagedReference;
 
 
 
@@ -86,6 +87,7 @@ public class Cliente implements Serializable {
 		this.tipo = tipo.getCod();
 	}
 
+	@JsonManagedReference
 	@OneToMany(mappedBy = "cliente")
 	public List<Endereco> getEnderecos() {
 		return enderecos;
