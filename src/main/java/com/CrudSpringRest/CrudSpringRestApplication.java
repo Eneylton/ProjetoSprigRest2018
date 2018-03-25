@@ -15,6 +15,7 @@ import com.CrudSpringRest.model.Cidade;
 import com.CrudSpringRest.model.Cliente;
 import com.CrudSpringRest.model.Endereco;
 import com.CrudSpringRest.model.Estado;
+import com.CrudSpringRest.model.ItemPedido;
 import com.CrudSpringRest.model.Pagamento;
 import com.CrudSpringRest.model.PagamentoComBoleto;
 import com.CrudSpringRest.model.PagamentoComCartao;
@@ -25,6 +26,7 @@ import com.CrudSpringRest.repository.CidadeRepository;
 import com.CrudSpringRest.repository.ClienteRepository;
 import com.CrudSpringRest.repository.EnderecoRepository;
 import com.CrudSpringRest.repository.EstadoRepository;
+import com.CrudSpringRest.repository.ItemPedidoRepository;
 import com.CrudSpringRest.repository.PagamentoRepository;
 import com.CrudSpringRest.repository.PedidoRepository;
 import com.CrudSpringRest.repository.ProdutoRepository;
@@ -56,6 +58,8 @@ public class CrudSpringRestApplication implements CommandLineRunner {
 	@Autowired
 	private PagamentoRepository pagamentoRepository;
 	
+	@Autowired
+	private ItemPedidoRepository itemPedidoRepository;
 	
 	public static void main(String[] args) {
 		SpringApplication.run(CrudSpringRestApplication.class, args);
@@ -122,6 +126,19 @@ public class CrudSpringRestApplication implements CommandLineRunner {
 		pedidoRepository.save(Arrays.asList(ped1, ped2));
 		pagamentoRepository.save(Arrays.asList(pagto1, pagto2));
 		
+		ItemPedido ip1 = new ItemPedido(ped1, p1, 0.00, 1, 2000.00);
+		ItemPedido ip2 = new ItemPedido(ped1, p3, 0.00, 2, 80.00);
+		ItemPedido ip3 = new ItemPedido(ped2, p2, 100.00, 1, 800.00);
+		
+		ped1.getItens().addAll(Arrays.asList(ip1, ip2));
+		ped2.getItens().addAll(Arrays.asList(ip3));
+		
+		p1.getItens().addAll(Arrays.asList(ip1));
+		p2.getItens().addAll(Arrays.asList(ip3));
+		p3.getItens().addAll(Arrays.asList(ip2));
+		
+		itemPedidoRepository.save(Arrays.asList(ip1, ip2, ip3));
+
 	}
 
 }

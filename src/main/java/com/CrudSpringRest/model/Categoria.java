@@ -10,51 +10,43 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 import javax.persistence.ManyToMany;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 @Entity
 public class Categoria implements Serializable {
-
 	private static final long serialVersionUID = 1L;
-
-	
-	private Long id;
-	
-	private String descricao;
-	
-	
-	private List<Produto> produtos = new ArrayList<>();
-
-	public Categoria() {
-		super();
-	}
-
-	public Categoria(Long id, String descricao) {
-		super();
-		this.id = id;
-		this.descricao = descricao;
-	}
 	
 	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getId() {
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
+	private String nome;
+	
+	@ManyToMany(mappedBy="categorias")
+	private List<Produto> produtos = new ArrayList<>();
+	
+	public Categoria() {
+	}
+
+	public Categoria(Integer id, String nome) {
+		super();
+		this.id = id;
+		this.nome = nome;
+	}
+
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
-	public String getDescricao() {
-		return descricao;
+	public String getNome() {
+		return nome;
 	}
 
-	public void setDescricao(String descricao) {
-		this.descricao = descricao;
+	public void setNome(String nome) {
+		this.nome = nome;
 	}
-	
-	@JsonIgnore
-    @ManyToMany(mappedBy ="categorias")
+
 	public List<Produto> getProdutos() {
 		return produtos;
 	}

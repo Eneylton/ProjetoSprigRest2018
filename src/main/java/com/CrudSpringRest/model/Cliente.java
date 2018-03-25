@@ -15,25 +15,35 @@ import javax.persistence.Id;
 import javax.persistence.OneToMany;
 
 import com.CrudSpringRest.enums.TipoCliente;
-import com.fasterxml.jackson.annotation.JsonManagedReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 	private String nome;
 	private String email;
 	private String cpfOuCnpj;
 	private Integer tipo;
+	
+	@OneToMany(mappedBy="cliente")
 	private List<Endereco> enderecos = new ArrayList<>();
+	
+	@ElementCollection
+	@CollectionTable(name="TELEFONE")
 	private Set<String> telefones = new HashSet<>();
+	
+	@JsonIgnore
+	@OneToMany(mappedBy="cliente")
 	private List<Pedido> pedidos = new ArrayList<>();
-
+	
 	public Cliente() {
 	}
 
-	public Cliente(Long id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
+	public Cliente(Integer id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
 		super();
 		this.id = id;
 		this.nome = nome;
@@ -42,13 +52,11 @@ public class Cliente implements Serializable {
 		this.tipo = tipo.getCod();
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -84,8 +92,6 @@ public class Cliente implements Serializable {
 		this.tipo = tipo.getCod();
 	}
 
-	@JsonManagedReference
-	@OneToMany(mappedBy = "cliente")
 	public List<Endereco> getEnderecos() {
 		return enderecos;
 	}
@@ -94,8 +100,6 @@ public class Cliente implements Serializable {
 		this.enderecos = enderecos;
 	}
 
-	@ElementCollection
-	@CollectionTable(name = "telefone")
 	public Set<String> getTelefones() {
 		return telefones;
 	}
@@ -104,7 +108,6 @@ public class Cliente implements Serializable {
 		this.telefones = telefones;
 	}
 
-	@OneToMany(mappedBy = "cliente")
 	public List<Pedido> getPedidos() {
 		return pedidos;
 	}
@@ -136,6 +139,6 @@ public class Cliente implements Serializable {
 		} else if (!id.equals(other.id))
 			return false;
 		return true;
-	}
+	}	
 
 }

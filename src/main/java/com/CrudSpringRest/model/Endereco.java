@@ -9,27 +9,34 @@ import javax.persistence.Id;
 import javax.persistence.JoinColumn;
 import javax.persistence.ManyToOne;
 
-import com.fasterxml.jackson.annotation.JsonBackReference;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
 public class Endereco implements Serializable {
 	private static final long serialVersionUID = 1L;
 
-	private Long id;
+	@Id
+	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	private Integer id;
 	private String logradouro;
 	private String numero;
 	private String complemento;
 	private String bairro;
 	private String cep;
-
+	
+	@JsonIgnore
+	@ManyToOne
+	@JoinColumn(name="cliente_id")
 	private Cliente cliente;
-
+	
+	@ManyToOne
+	@JoinColumn(name="cidade_id")
 	private Cidade cidade;
-
+	
 	public Endereco() {
 	}
 
-	public Endereco(Long id, String logradouro, String numero, String complemento, String bairro, String cep,
+	public Endereco(Integer id, String logradouro, String numero, String complemento, String bairro, String cep,
 			Cliente cliente, Cidade cidade) {
 		super();
 		this.id = id;
@@ -39,16 +46,14 @@ public class Endereco implements Serializable {
 		this.bairro = bairro;
 		this.cep = cep;
 		this.cliente = cliente;
-		this.cidade = cidade;
+		this.setCidade(cidade);
 	}
 
-	@Id
-	@GeneratedValue(strategy = GenerationType.IDENTITY)
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -92,9 +97,6 @@ public class Endereco implements Serializable {
 		this.cep = cep;
 	}
 
-	@JsonBackReference
-	@ManyToOne
-	@JoinColumn(name = "cliente_id")
 	public Cliente getCliente() {
 		return cliente;
 	}
@@ -103,8 +105,6 @@ public class Endereco implements Serializable {
 		this.cliente = cliente;
 	}
 
-	@ManyToOne
-	@JoinColumn(name = "cidade_id")
 	public Cidade getCidade() {
 		return cidade;
 	}
@@ -137,5 +137,7 @@ public class Endereco implements Serializable {
 			return false;
 		return true;
 	}
-
+	
+	
+	
 }

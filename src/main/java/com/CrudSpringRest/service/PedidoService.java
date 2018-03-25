@@ -3,21 +3,21 @@ package com.CrudSpringRest.service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.CrudSpringRest.model.Cliente;
-import com.CrudSpringRest.repository.ClienteRepository;
+import com.CrudSpringRest.model.Pedido;
+import com.CrudSpringRest.repository.PedidoRepository;
 import com.CrudSpringRest.util.exceptions.ObjectNotFoundException;
 
 @Service
-public class ClienteService {
+public class PedidoService {
 	
 	@Autowired
-	private ClienteRepository repo;
+	private PedidoRepository repo;
 	
-	public Cliente buscar(Integer id) {
-		Cliente obj = repo.findOne(id);
+	public Pedido buscar(Integer id) {
+		Pedido obj = repo.findOne(id);
 		if (obj == null) {
 			throw new ObjectNotFoundException("Objeto não encontrado! Id: " + id
-					+ ", Tipo: " + Cliente.class.getName());
+					+ ", Tipo: " + Pedido.class.getName());
 		}
 		return obj;
 	}

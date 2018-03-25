@@ -11,34 +11,38 @@ import javax.persistence.MapsId;
 import javax.persistence.OneToOne;
 
 import com.CrudSpringRest.enums.EstadoPagamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 @Entity
-@Inheritance(strategy = InheritanceType.JOINED)
+@Inheritance(strategy=InheritanceType.JOINED)
 public abstract class Pagamento implements Serializable {
 	private static final long serialVersionUID = 1L;
-
-	private Long id;
-
+	
+	@Id
+	private Integer id;
 	private Integer estado;
 
+	@JsonIgnore
+	@OneToOne
+	@JoinColumn(name="pedido_id")
+	@MapsId
 	private Pedido pedido;
-
+	
 	public Pagamento() {
 	}
 
-	public Pagamento(Long id, EstadoPagamento estado, Pedido pedido) {
+	public Pagamento(Integer id, EstadoPagamento estado, Pedido pedido) {
 		super();
 		this.id = id;
 		this.estado = estado.getCod();
 		this.pedido = pedido;
 	}
 
-	@Id
-	public Long getId() {
+	public Integer getId() {
 		return id;
 	}
 
-	public void setId(Long id) {
+	public void setId(Integer id) {
 		this.id = id;
 	}
 
@@ -50,9 +54,6 @@ public abstract class Pagamento implements Serializable {
 		this.estado = estado.getCod();
 	}
 
-	@OneToOne
-	@JoinColumn(name = "pedido_id")
-	@MapsId
 	public Pedido getPedido() {
 		return pedido;
 	}
@@ -85,5 +86,7 @@ public abstract class Pagamento implements Serializable {
 			return false;
 		return true;
 	}
-
+	
+	
+	
 }
