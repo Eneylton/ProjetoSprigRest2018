@@ -17,23 +17,20 @@ import javax.persistence.OneToMany;
 import com.CrudSpringRest.enums.TipoCliente;
 import com.fasterxml.jackson.annotation.JsonManagedReference;
 
-
-
 @Entity
 public class Cliente implements Serializable {
 	private static final long serialVersionUID = 1L;
-
 
 	private Long id;
 	private String nome;
 	private String email;
 	private String cpfOuCnpj;
 	private Integer tipo;
-    private List<Endereco> enderecos = new ArrayList<>();
-    private Set<String> telefones = new HashSet<>();
+	private List<Endereco> enderecos = new ArrayList<>();
+	private Set<String> telefones = new HashSet<>();
+	private List<Pedido> pedidos = new ArrayList<>();
 
-	
-    public Cliente() {
+	public Cliente() {
 	}
 
 	public Cliente(Long id, String nome, String email, String cpfOuCnpj, TipoCliente tipo) {
@@ -105,6 +102,15 @@ public class Cliente implements Serializable {
 
 	public void setTelefones(Set<String> telefones) {
 		this.telefones = telefones;
+	}
+
+	@OneToMany(mappedBy = "cliente")
+	public List<Pedido> getPedidos() {
+		return pedidos;
+	}
+
+	public void setPedidos(List<Pedido> pedidos) {
+		this.pedidos = pedidos;
 	}
 
 	@Override
